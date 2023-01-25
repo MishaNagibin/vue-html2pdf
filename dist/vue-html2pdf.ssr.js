@@ -112,7 +112,7 @@ var script = {
 			}
 		},
 
-		getUrlPdf: function getUrlPdf() {
+		getBlob: function getBlob() {
 			this.$emit('startPagination');
 			this.progress = 0;
 			this.paginationOfElements(true);
@@ -124,8 +124,8 @@ var script = {
 			this.paginationOfElements();
 		},
 
-		paginationOfElements: function paginationOfElements (isGetUrl) {
-			if ( isGetUrl === void 0 ) isGetUrl = false;
+		paginationOfElements: function paginationOfElements (isGetBlob) {
+			if ( isGetBlob === void 0 ) isGetBlob = false;
 
 			this.progress = 25;
 
@@ -138,7 +138,7 @@ var script = {
 			if (this.manualPagination) {
 				this.progress = 70;
 				this.$emit('hasPaginated');
-				this.downloadPdf(isGetUrl);
+				this.downloadPdf(isGetBlob);
 				return
 			}
 
@@ -195,11 +195,11 @@ var script = {
 			}
 
 			this.$emit('hasPaginated');
-			this.downloadPdf(isGetUrl);
+			this.downloadPdf(isGetBlob);
 		},
 
-		downloadPdf: async function downloadPdf (isGetUrl) {
-			if ( isGetUrl === void 0 ) isGetUrl = false;
+		downloadPdf: async function downloadPdf (isGetBlob) {
+			if ( isGetBlob === void 0 ) isGetBlob = false;
 
 			// Set Element and Html2pdf.js Options
 			var pdfContent = this.$refs.pdfContent;
@@ -216,17 +216,19 @@ var script = {
 			}
 
 			if (this.enableDownload) {
-				pdfBlobUrl = isGetUrl ? await html2PdfSetup.output('bloburl') : await html2PdfSetup.save().output('bloburl');
+				pdfBlobUrl = isGetBlob ? await html2PdfSetup.output('bloburl') : await html2PdfSetup.save().output('bloburl');
 			}
-			if (isGetUrl) {
-				this.$emit('pdf-url-get', pdfBlobUrl);
+			if (isGetBlob) {
+				var res = await fetch(pdfBlobUrl);
+				var blobFile = await res.blob();
+				this.$emit('blob-get', blobFile);
 				this.progress = 100;
 				return
 			}
 			if (pdfBlobUrl) {
-				var res = await fetch(pdfBlobUrl);
-				var blobFile = await res.blob();
-				this.$emit('hasDownloaded', blobFile);
+				var res$1 = await fetch(pdfBlobUrl);
+				var blobFile$1 = await res$1.blob();
+				this.$emit('hasDownloaded', blobFile$1);
 			}
 
 			this.progress = 100;
@@ -392,13 +394,13 @@ var __vue_staticRenderFns__ = [];
   /* style */
   var __vue_inject_styles__ = function (inject) {
     if (!inject) { return }
-    inject("data-v-1d4b500c_0", { source: ".vue-html2pdf .layout-container[data-v-1d4b500c]{position:fixed;width:100vw;height:100vh;left:-100vw;top:0;z-index:-9999;background:rgba(95,95,95,.8);display:flex;justify-content:center;align-items:flex-start;overflow:auto}.vue-html2pdf .layout-container.show-layout[data-v-1d4b500c]{left:0;z-index:9999}.vue-html2pdf .layout-container.unset-all[data-v-1d4b500c]{all:unset;width:auto;height:auto}.vue-html2pdf .pdf-preview[data-v-1d4b500c]{position:fixed;width:65%;min-width:600px;height:80vh;top:100px;z-index:9999999;left:50%;transform:translateX(-50%);border-radius:5px;box-shadow:0 0 10px #00000048}.vue-html2pdf .pdf-preview button[data-v-1d4b500c]{position:absolute;top:-20px;left:-15px;width:35px;height:35px;background:#555;border:0;box-shadow:0 0 10px #00000048;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}.vue-html2pdf .pdf-preview iframe[data-v-1d4b500c]{border:0}.vue-html2pdf .transition-anim-enter-active[data-v-1d4b500c],.vue-html2pdf .transition-anim-leave-active[data-v-1d4b500c]{transition:opacity .3s ease-in}.vue-html2pdf .transition-anim-enter[data-v-1d4b500c],.vue-html2pdf .transition-anim-leave-to[data-v-1d4b500c]{opacity:0}", map: undefined, media: undefined });
+    inject("data-v-13c26120_0", { source: ".vue-html2pdf .layout-container[data-v-13c26120]{position:fixed;width:100vw;height:100vh;left:-100vw;top:0;z-index:-9999;background:rgba(95,95,95,.8);display:flex;justify-content:center;align-items:flex-start;overflow:auto}.vue-html2pdf .layout-container.show-layout[data-v-13c26120]{left:0;z-index:9999}.vue-html2pdf .layout-container.unset-all[data-v-13c26120]{all:unset;width:auto;height:auto}.vue-html2pdf .pdf-preview[data-v-13c26120]{position:fixed;width:65%;min-width:600px;height:80vh;top:100px;z-index:9999999;left:50%;transform:translateX(-50%);border-radius:5px;box-shadow:0 0 10px #00000048}.vue-html2pdf .pdf-preview button[data-v-13c26120]{position:absolute;top:-20px;left:-15px;width:35px;height:35px;background:#555;border:0;box-shadow:0 0 10px #00000048;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}.vue-html2pdf .pdf-preview iframe[data-v-13c26120]{border:0}.vue-html2pdf .transition-anim-enter-active[data-v-13c26120],.vue-html2pdf .transition-anim-leave-active[data-v-13c26120]{transition:opacity .3s ease-in}.vue-html2pdf .transition-anim-enter[data-v-13c26120],.vue-html2pdf .transition-anim-leave-to[data-v-13c26120]{opacity:0}", map: undefined, media: undefined });
 
   };
   /* scoped */
-  var __vue_scope_id__ = "data-v-1d4b500c";
+  var __vue_scope_id__ = "data-v-13c26120";
   /* module identifier */
-  var __vue_module_identifier__ = "data-v-1d4b500c";
+  var __vue_module_identifier__ = "data-v-13c26120";
   /* functional template */
   var __vue_is_functional_template__ = false;
   /* style inject shadow dom */
